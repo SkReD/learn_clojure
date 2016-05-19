@@ -1,0 +1,17 @@
+(start-repl)
+quit
+(cell= (map vector (cycle ["#eee" "#fff"]) [1 2 3]))
+(start-repl)
+(cell= (map vector (cycle ["#eee" "#fff"]) [1 2 3]))
+(start-repl)
+ (cell= (get-in state [:croses) (partial swap! c assoc-in path))
+game.logic/board
+(game.logic/board)
+(@game.logic/board)
+`game.logic/board
+game.logic/board
+(start-repl)
+(cell=)
+(cell= ())
+(cell= (constantly 1))
+(hoplon.javelin/cell= (constantly 1))
