@@ -1,47 +1,68 @@
 (set-env!
-  :dependencies '[[adzerk/boot-cljs          "1.7.48-4"]
-                  [adzerk/boot-cljs-repl   "0.3.0"]
+  :dependencies '[[adzerk/boot-cljs "1.7.48-4"]
+                  [adzerk/boot-cljs-repl "0.3.0"]
                   [com.cemerick/piggieback "0.2.1"]
-                  [weasel                  "0.7.0"]
+                  [weasel "0.7.0"]
                   [org.clojure/tools.nrepl "0.2.12"]
-                  [adzerk/boot-reload        "0.3.2"]
-                  [compojure                 "1.4.0"]
-                  [hoplon/boot-hoplon        "0.1.10"]
-                  [hoplon/castra             "3.0.0-alpha1"]
-                  [hoplon/hoplon             "6.0.0-alpha10"]
-                  [hoplon/javelin            "3.8.4"]
-                  [org.clojure/clojure       "1.7.0"]
-                  [org.clojure/clojurescript "1.7.122"]
-                  [pandeiro/boot-http        "0.6.3"]
-                  [ring                      "1.4.0"]
-                  [ring/ring-defaults        "0.1.5"]]
-  :source-paths   #{"src"}
+                  [adzerk/boot-reload "0.4.7"]
+                  [compojure "1.5.0"]
+                  [hoplon/boot-hoplon "0.1.13"]
+                  [hoplon/castra "3.0.0-alpha3"]
+                  [hoplon/hoplon "6.0.0-alpha14"]
+                  [hoplon/javelin "3.8.4"]
+                  [org.clojure/clojure "1.8.0"]
+                  [org.clojure/clojurescript "1.8.51"]
+                  [pandeiro/boot-http "0.7.3"]
+                  [ring "1.4.0"]
+                  [ring/ring-defaults "0.2.0"]
+                  [com.cemerick/piggieback "0.2.1"]
+                  [weasel "0.7.0"]
+                  [org.clojure/tools.nrepl "0.2.12"]]
+  :source-paths #{"src"}
   :resource-paths #{"resources"})
 
 (require
-  '[adzerk.boot-cljs      :refer [cljs]]
+  '[adzerk.boot-cljs :refer [cljs]]
   '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl]]
-  '[adzerk.boot-reload    :refer [reload]]
-  '[hoplon.boot-hoplon    :refer [hoplon prerender]]
-  '[pandeiro.boot-http    :refer [serve]])
+  '[adzerk.boot-reload :refer [reload]]
+  '[hoplon.boot-hoplon :refer [hoplon prerender]]
+  '[pandeiro.boot-http :refer [serve]]
+  '[service.init])
+
+(deftask build
+         []
+         (comp
+           (hoplon)
+           ;(cljs-repl)                                      ; order is important!!
+           (cljs); :optimizations :simple)
+           (speak)))
+
+(deftask server
+         []
+         (comp
+           (watch)
+           (serve
+             :port 8000
+             :init `service.init/jetty-init
+             :reload true)))
 
 (deftask dev
-  "Build castra-chat for local development."
-  []
-  (comp
-   (watch)
-   (hoplon)
-   (reload)
-   (cljs)
-   (serve
-     :port    8000
-     :reload  true)
-   (speak)))
+         "Build castra-chat for local development."
+         []
+         (comp
+           (watch)
+           (hoplon)
+           (cljs-repl :port 9001)                                      ; order is important!!
+           (cljs)
+           (serve
+             :port 8000
+             :init `service.init/jetty-init)
+           (speak)))
 
 (deftask prod
-  "Build castra-chat for production deployment."
-  []
-  (comp
-    (hoplon)
-    (cljs :optimizations :advanced)
-    (prerender)))
+         "Build castra-chat for production deployment."
+         []
+         (comp
+           (hoplon)
+           (cljs :optimizations :advanced)
+           (prerender)))

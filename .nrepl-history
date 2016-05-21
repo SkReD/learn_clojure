@@ -15,3 +15,15 @@ game.logic/board
 (cell= ())
 (cell= (constantly 1))
 (hoplon.javelin/cell= (constantly 1))
+(ns)
+(game.logic/board)
+(load game/logic.cljs)
+(load src/game/logic.cljs)
+(load game.logic)
+(ns game.logic)
+(board)
+uit
+quit
+(start-repl)
+@game.logic/board
+(start-repl)

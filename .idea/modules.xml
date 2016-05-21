@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/learn_clojure.iml" filepath="$PROJECT_DIR$/learn_clojure.iml" />
+      <module fileurl="file://$PROJECT_DIR$/boot-project.iml" filepath="$PROJECT_DIR$/boot-project.iml" />
     </modules>
   </component>
 </project>

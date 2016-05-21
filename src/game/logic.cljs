@@ -42,7 +42,7 @@
 		#(get-cell state row-index %)
 		(range 0 size)))
 
-(javelin.core/defc= board
+(def board (javelin.core/cell=
 	(map
 		#(get-row state size %)
-		(range 0 size)))
+		(range 0 size))))

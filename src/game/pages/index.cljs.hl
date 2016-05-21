@@ -1,13 +1,8 @@
 (page "index.html"
-      (:require [game.logic])
-      (:require [debug.repl]))
+      (:require [game.logic] [debug.repl]))
 
 (def currentMarkType (cell :crosses))
-(def board (cell (@game.logic/board)))
-
-(defn set-cell-mark
-  [row-index cell-index]
-  )
+(def board @game.logic/board)
 
 (html
   (body
@@ -15,5 +10,5 @@
       (loop-tpl :bindings [row board]
         (div :class "game-row"
              (loop-tpl :bindings [row-cell row]
-                       (span :class "game-cell" :click #(js/console.log 2) row-cell)))))))
+                       (span :class "game-cell" :click #(js/console.log 4) row-cell)))))))
 
