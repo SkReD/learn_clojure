@@ -2,13 +2,11 @@
       (:require [game.logic] [debug.repl]))
 
 (def currentMarkType (cell :crosses))
-(def board @game.logic/board)
 
 (html
   (body
     (div :class "game-table"
-      (loop-tpl :bindings [row board]
+      (loop-tpl :bindings [row game.logic/board]
         (div :class "game-row"
              (loop-tpl :bindings [row-cell row]
-                       (span :class "game-cell" :click #(js/console.log 4) row-cell)))))))
-
+                       (span :class "game-cell" row-cell)))))))

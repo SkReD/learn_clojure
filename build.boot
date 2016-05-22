@@ -18,8 +18,7 @@
                   [com.cemerick/piggieback "0.2.1"]
                   [weasel "0.7.0"]
                   [org.clojure/tools.nrepl "0.2.12"]]
-  :source-paths #{"src"}
-  :resource-paths #{"resources"})
+  :source-paths #{"src"})
 
 (require
   '[adzerk.boot-cljs :refer [cljs]]
@@ -52,11 +51,13 @@
          (comp
            (watch)
            (hoplon)
+           (reload)
            (cljs-repl :port 9001)                                      ; order is important!!
            (cljs)
            (serve
              :port 8000
-             :init `service.init/jetty-init)
+             ;:init `service.init/jetty-init
+             :reload true)
            (speak)))
 
 (deftask prod
