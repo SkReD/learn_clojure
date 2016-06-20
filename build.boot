@@ -15,10 +15,10 @@
                   [pandeiro/boot-http "0.7.3"]
                   [ring "1.4.0"]
                   [ring/ring-defaults "0.2.0"]
-                  [com.cemerick/piggieback "0.2.1"]
-                  [weasel "0.7.0"]
-                  [org.clojure/tools.nrepl "0.2.12"]]
-  :source-paths #{"src"})
+                  [deraen/boot-less "0.5.0"]
+                  [differ "0.3.1"]]
+  :source-paths   #{"src/shared" "src/hl"}
+  :resource-paths #{"resources" "src/clj"})
 
 (require
   '[adzerk.boot-cljs :refer [cljs]]
@@ -26,7 +26,7 @@
   '[adzerk.boot-reload :refer [reload]]
   '[hoplon.boot-hoplon :refer [hoplon prerender]]
   '[pandeiro.boot-http :refer [serve]]
-  '[service.init])
+  '[deraen.boot-less :refer [less]])
 
 (deftask build
          []
@@ -36,27 +36,24 @@
            (cljs); :optimizations :simple)
            (speak)))
 
-(deftask server
+(deftask server-repl
          []
          (comp
-           (watch)
-           (serve
-             :port 8000
-             :init `service.init/jetty-init
-             :reload true)))
+           (repl :init-ns 'server.store)))
 
 (deftask dev
-         "Build castra-chat for local development."
+         ""
          []
          (comp
            (watch)
+           (cljs-repl :port 9001)           
+           (less)
            (hoplon)
            (reload)
-           (cljs-repl :port 9001)                                      ; order is important!!
            (cljs)
            (serve
              :port 8000
-             ;:init `service.init/jetty-init
+             :handler 'server.handler/app
              :reload true)
            (speak)))
 
